@@ -1,0 +1,23 @@
+{
+  "skill_name": "rag-creator",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Je veux créer un chatbot qui répond aux questions des employés à partir de nos procédures internes (une centaine de PDF et Word, mis à jour occasionnellement). Deux profils : RH qui voit tout, et les autres employés qui ne doivent voir que les procédures générales, pas les documents RH sensibles. Pas besoin de dashboard de monitoring pour l'instant, on verra plus tard. Stack : je préfère rester sur Python/FastAPI pour le backend, pas encore décidé pour le vector store.",
+      "expected_output": "Le skill doit interroger sur les points non tranchés (vector store précis, frontend nécessaire ou juste API), proposer une architecture avec RBAC (2 rôles, filtrage par collection) mais SANS monitoring/évaluation (non demandés), poser le pipeline d'ingestion adapté au volume modéré, et livrer un scaffold cohérent avec les références ingestion.md/vector-store.md/orchestrator.md/rbac-auth.md sans imposer monitoring.md/evaluation.md ni frontend.md si non désiré.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "J'ai déjà un RAG basique en prod (FastAPI + Pinecone + un simple endpoint /query) qui répond correctement mais sans authentification ni suivi des coûts. On commence à avoir des demandes de plusieurs clients internes et le boss veut savoir combien ça coûte par équipe et pouvoir couper l'accès à certains dossiers pour certaines équipes. Comment je fais évoluer ça proprement ?",
+      "expected_output": "Le skill doit d'abord explorer le code existant avant de proposer quoi que ce soit (c'est une extension, pas un projet neuf), identifier qu'il faut ajouter RBAC (rbac-auth.md) + monitoring (orchestrator.md section monitoring) sans tout réécrire, respecter les conventions déjà en place dans le projet existant, et ne pas imposer le pattern RunState/orchestrateur multi-stage si le projet actuel est trop simple pour le justifier immédiatement — proposer une évolution incrémentale plutôt qu'une réécriture complète.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "on doit choisir entre pinecone et pgvector pour un rag qu'on va brancher sur notre supabase existant, on a genre 50k documents, budget serré, et notre équipe est plus à l'aise en SQL qu'avec des trucs managés externes",
+      "expected_output": "Le skill doit répondre avec la table de comparaison de vector-store.md §2, recommander pgvector étant donné que Supabase/Postgres est déjà présent (évite un service supplémentaire, coût marginal, contrôle SQL apprécié par l'équipe), tout en mentionnant les limitations documentées (pas de get_retriever natif, nécessité de la RPC SECURITY DEFINER) sans juste répéter le prompt sans nuance.",
+      "files": []
+    }
+  ]
+}

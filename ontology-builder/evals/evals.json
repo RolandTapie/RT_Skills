@@ -1,0 +1,41 @@
+{
+  "skill_name": "ontology-builder",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "J'ai un dossier de documents RH déjà en Markdown ici : evals/files/eval1-homogeneous-md/. Génère-moi l'ontologie (types d'entités et de relations) pour préparer une extraction de graphe de connaissances dessus.",
+      "expected_output": "Un fichier ontologie/ontologie.md respectant le squelette du skill (Vue d'ensemble, Groupes d'entités, Groupes de relations), avec des types d'entités/relations pertinents pour un règlement RH (horaires, télétravail, formation, évaluation, accidents du travail), en français, propriétés typées, relations à couple source→cible strict.",
+      "files": [],
+      "expectations": [
+        "Un fichier ontologie a été produit dans outputs/",
+        "Le document contient les sections '## Groupes d'entités' et '## Groupes de relations'",
+        "Chaque type de relation a un couple source→cible unique (pas de '|' ni de virgule entre types dans le couple)",
+        "Chaque propriété déclarée indique un type parmi string/integer/float/boolean/date/enum",
+        "Le contenu reflète les sujets réels du corpus (horaire flottant, télétravail, formation, évaluation, accident du travail) plutôt qu'un domaine générique hors-sujet"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Peux-tu me construire un schéma d'entités/relations pour le dossier evals/files/eval2-mixed-formats/ ? Il y a un mélange de .docx, .pdf et .md dedans, tous sur le même thème RH (horaires de travail).",
+      "expected_output": "Le skill convertit les .docx (via le script de conversion), lit le .pdf et le .md nativement, produit ontologie/ontologie.md avec un contenu cohérent tenant compte de TOUS les documents (pas seulement les formats faciles à lire) — en particulier les deux documents .docx ne doivent pas être ignorés silencieusement.",
+      "files": [],
+      "expectations": [
+        "Les deux fichiers .docx ont été effectivement exploités, pas seulement le .pdf et le .md (vérifiable via SUMMARY.md)",
+        "Un fichier ontologie a été produit avec les sections Groupes d'entités / Groupes de relations",
+        "Aucun des 4 fichiers sources n'a été silencieusement ignoré sans mention explicite dans SUMMARY.md",
+        "Le typage des relations reste strict (couple source→cible unique)"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Génère l'ontologie du dossier evals/files/eval3-existing-ontology/ pour préparer l'extraction du graphe.",
+      "expected_output": "Le dossier contient déjà ontologie/ontologie.md (une vraie ontologie RH existante, volumineuse). Le skill doit détecter ce fichier existant et s'arrêter pour demander explicitement à l'utilisateur (écraser / fusionner-étendre / annuler) au lieu d'écraser silencieusement ou de continuer sans rien dire.",
+      "files": [],
+      "expectations": [
+        "Le fichier ontologie/ontologie.md original n'a pas été modifié (contenu identique avant/après le run)",
+        "L'exécution signale explicitement la présence d'une ontologie existante et les 3 choix possibles (écraser/fusionner/annuler) avant toute action destructive",
+        "Aucun fichier n'a été écrit par-dessus l'ontologie existante sans confirmation explicite"
+      ]
+    }
+  ]
+}

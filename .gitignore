@@ -1,0 +1,4 @@
+__pycache__/
+*.pyc
+ontology-builder-workspace/
+ontology-builder/evals/files/
